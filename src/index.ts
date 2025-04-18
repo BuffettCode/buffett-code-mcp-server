@@ -151,7 +151,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
       case 'buffetcode_get_company_quarterly': {
-        const args = CompanyQuarterlyRequestSchema.parse(request.params.arguments);
+        const args = CompanyQuarterlyRequestSchema.parse(
+          request.params.arguments
+        );
 
         const response = await fetch(
           `${BUFFETT_CODE_BASE_URL}/api/v4/us/companies/${COMPANY_ID}/quarterly/${args.year_quarter}`,
