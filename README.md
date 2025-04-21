@@ -40,6 +40,31 @@ TBD
 ...
 ```
 
+
+#### Claude Desktopで動かすとき
+
+tsxが必要でしたので、インストールしました。
+```
+npm install -D tsx
+```
+
+`claude_desktop_config.json`を書き換えます。
+```json
+{
+  "mcpServers": {
+      "buffet-code": {
+        "command": "npx",
+        "args": [
+          "tsx",
+          "/Users/shogoakiyama/Desktop/buffett-code-mcp-server/src/index.ts"
+        ],
+        "env": {
+        }
+      }
+  }
+}
+```
+
 ## Development
 
 ### Available Scripts
