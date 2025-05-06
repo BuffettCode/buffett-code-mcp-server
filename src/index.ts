@@ -7,45 +7,30 @@ import {
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { z } from 'zod';
+// import { z } from 'zod';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const BUFFETT_CODE_BASE_URL = 'https://api.buffett-code.com';
-// for testing, ref. https://docs.buffett-code.com/api/#section/%E8%AA%8D%E8%A8%BC/API
-const BUFFETT_CODE_API_KEY = 'sAJGq9JH193KiwnF947v74KnDYkO7z634LWQQfPY';
+
+const BUFFETT_CODE_API_KEY = process.env.BUFFETT_CODE_API_KEY;
+if (!BUFFETT_CODE_API_KEY) {
+  throw new Error(
+    'BUFFETT_CODE_API_KEY is required. Set it in your environment or .env file.'
+  );
+}
+
 // Alphabet Inc.
 const COMPANY_ID = '0001652044';
 
-const BaseRequestSchema = z.object({});
-
-const CompanyDailyRequestSchema = z.object({
-  date: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, 'RFC3339形式の日付 (例: 2024-01-01)'),
-});
-
-const CompanyQuarterlyRequestSchema = z.object({
-  year_quarter: z
-    .string()
-    .regex(/^\d{4}Q\d$/, '決算期を示す決算年度年と四半期 (例: 2020Q4)'),
-});
-
-const CompanyStocksRequestSchema = z.object({
-  stock_id: z.string().regex(/^[a-z]+$/, '銘柄コード (例: goog)'),
-});
-
-const CompanyStocksDailyRequestSchema = z.object({
-  stock_id: z.string().regex(/^[a-z]+$/, '銘柄コード (例: goog)'),
-  date: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, 'RFC3339形式の日付 (例: 2024-01-01)'),
-});
-
-const CompanyStocksQuarterlyRequestSchema = z.object({
-  stock_id: z.string().regex(/^[a-z]+$/, '銘柄コード (例: goog)'),
-  year_quarter: z
-    .string()
-    .regex(/^\d{4}Q\d$/, '決算期を示す決算年度年と四半期 (例: 2020Q4)'),
-});
+import {
+  BaseRequestSchema,
+  CompanyDailyRequestSchema,
+  CompanyQuarterlyRequestSchema,
+  CompanyStocksRequestSchema,
+  CompanyStocksDailyRequestSchema,
+  CompanyStocksQuarterlyRequestSchema,
+} from './schemas.js';
 
 const server = new Server(
   {
