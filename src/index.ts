@@ -7,12 +7,21 @@ import {
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-// import { z } from 'zod';
+import {
+  CompanyRequestSchema,
+  CompanyDailyRequestSchema,
+  CompanyQuarterlyRequestSchema,
+  CompanyStocksRequestSchema,
+  CompanyStocksDailyRequestSchema,
+  CompanyStocksQuarterlyRequestSchema,
+} from './schemas.js';
 import dotenv from 'dotenv';
+import { createBuffetteCodeClient } from './client/index.js';
+
 dotenv.config();
 
-const BUFFETT_CODE_BASE_URL = 'https://api.buffett-code.com';
-
+const BUFFETT_CODE_BASE_URL =
+  process.env.BUFFETT_CODE_BASE_URL || 'https://api.buffett-code.com';
 const BUFFETT_CODE_API_KEY = process.env.BUFFETT_CODE_API_KEY;
 if (!BUFFETT_CODE_API_KEY) {
   throw new Error(
@@ -20,17 +29,10 @@ if (!BUFFETT_CODE_API_KEY) {
   );
 }
 
-// Alphabet Inc.
-const COMPANY_ID = '0001652044';
-
-import {
-  BaseRequestSchema,
-  CompanyDailyRequestSchema,
-  CompanyQuarterlyRequestSchema,
-  CompanyStocksRequestSchema,
-  CompanyStocksDailyRequestSchema,
-  CompanyStocksQuarterlyRequestSchema,
-} from './schemas.js';
+const buffetteCodeClient = createBuffetteCodeClient(
+  BUFFETT_CODE_BASE_URL,
+  BUFFETT_CODE_API_KEY
+);
 
 const server = new Server(
   {
@@ -48,36 +50,36 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: 'buffetcode_get_company',
+        name: 'buffetcode_get_us_company',
         description: 'Get company information from Buffett Code',
-        inputSchema: zodToJsonSchema(BaseRequestSchema),
+        inputSchema: zodToJsonSchema(CompanyRequestSchema),
       },
       {
-        name: 'buffetcode_get_company_daily',
+        name: 'buffetcode_get_us_company_daily',
         description:
           'Get daily company information from Buffett Code for a specific date',
         inputSchema: zodToJsonSchema(CompanyDailyRequestSchema),
       },
       {
-        name: 'buffetcode_get_company_quarterly',
+        name: 'buffetcode_get_us_company_quarterly',
         description:
           'Get quarterly company information from Buffett Code for a specific year and quarter',
         inputSchema: zodToJsonSchema(CompanyQuarterlyRequestSchema),
       },
       {
-        name: 'buffetcode_get_company_stocks',
+        name: 'buffetcode_get_us_company_stocks',
         description:
           'Get company stock information from Buffett Code for a specific stock',
         inputSchema: zodToJsonSchema(CompanyStocksRequestSchema),
       },
       {
-        name: 'buffetcode_get_company_stocks_daily',
+        name: 'buffetcode_get_us_company_stocks_daily',
         description:
           'Get daily company stock information from Buffett Code for a specific stock and date',
         inputSchema: zodToJsonSchema(CompanyStocksDailyRequestSchema),
       },
       {
-        name: 'buffetcode_get_company_stocks_quarterly',
+        name: 'buffetcode_get_us_company_stocks_quarterly',
         description:
           'Get quarterly company stock information from Buffett Code for a specific stock and year-quarter',
         inputSchema: zodToJsonSchema(CompanyStocksQuarterlyRequestSchema),
@@ -93,148 +95,148 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     switch (request.params.name) {
-      case 'buffetcode_get_company': {
-        const response = await fetch(
-          `${BUFFETT_CODE_BASE_URL}/api/v4/us/companies/${COMPANY_ID}`,
+      case 'buffetcode_get_us_company': {
+        const args = CompanyRequestSchema.parse(request.params.arguments);
+        const company_id = args.companyId;
+        const response = await buffetteCodeClient.GET(
+          '/api/v4/us/companies/{company_id}',
           {
-            headers: {
-              'x-api-key': BUFFETT_CODE_API_KEY,
+            params: {
+              path: {
+                company_id,
+              },
             },
           }
         );
 
-        if (!response.ok) {
+        if (response.error) {
           throw new Error('Failed to get');
         }
 
-        const result = await response.json();
+        const result = response.data;
 
         return {
           content: [{ type: 'text', text: JSON.stringify(result) }],
         };
       }
-      case 'buffetcode_get_company_daily': {
-        const args = CompanyDailyRequestSchema.parse(request.params.arguments);
 
-        const response = await fetch(
-          `${BUFFETT_CODE_BASE_URL}/api/v4/us/companies/${COMPANY_ID}/daily/${args.date}`,
-          {
-            headers: {
-              'x-api-key': BUFFETT_CODE_API_KEY,
-            },
-          }
+      case 'buffetcode_get_us_company_daily': {
+        const args = CompanyDailyRequestSchema.parse(request.params.arguments);
+        const company_id = args.companyId;
+        const response = await buffetteCodeClient.GET(
+          '/api/v4/us/companies/{company_id}/daily/{date}',
+          { params: { path: { company_id, date: args.date } } }
         );
 
-        if (!response.ok) {
-          throw new Error(`Failed to get daily data: ${response.statusText}`);
-        }
-
-        const result = await response.json();
+        if (response.error)
+          throw new Error(`Failed to get daily data: ${response.error}`);
+        const result = response.data;
 
         return {
           content: [{ type: 'text', text: JSON.stringify(result) }],
         };
       }
-      case 'buffetcode_get_company_quarterly': {
+
+      case 'buffetcode_get_us_company_quarterly': {
         const args = CompanyQuarterlyRequestSchema.parse(
           request.params.arguments
         );
-
-        const response = await fetch(
-          `${BUFFETT_CODE_BASE_URL}/api/v4/us/companies/${COMPANY_ID}/quarterly/${args.year_quarter}`,
+        const company_id = args.companyId;
+        const response = await buffetteCodeClient.GET(
+          '/api/v4/us/companies/{company_id}/quarterly/{year_quarter}',
           {
-            headers: {
-              'x-api-key': BUFFETT_CODE_API_KEY,
+            params: {
+              path: { company_id, year_quarter: args.year_quarter },
             },
           }
         );
 
-        if (!response.ok) {
-          throw new Error(
-            `Failed to get quarterly data: ${response.statusText}`
-          );
-        }
-
-        const result = await response.json();
+        if (response.error)
+          throw new Error(`Failed to get quarterly data: ${response.error}`);
+        const result = response.data;
 
         return {
           content: [{ type: 'text', text: JSON.stringify(result) }],
         };
       }
-      case 'buffetcode_get_company_stocks': {
+
+      case 'buffetcode_get_us_company_stocks': {
         const args = CompanyStocksRequestSchema.parse(request.params.arguments);
-
-        const response = await fetch(
-          `${BUFFETT_CODE_BASE_URL}/api/v4/us/companies/${COMPANY_ID}/stocks/${args.stock_id}`,
+        const company_id = args.companyId;
+        const response = await buffetteCodeClient.GET(
+          '/api/v4/us/companies/{company_id}/stocks/{stock_id}',
           {
-            headers: {
-              'x-api-key': BUFFETT_CODE_API_KEY,
+            params: {
+              path: { company_id, stock_id: args.stock_id },
             },
           }
         );
 
-        if (!response.ok) {
-          throw new Error(`Failed to get stock data: ${response.statusText}`);
-        }
-
-        const result = await response.json();
+        if (response.error)
+          throw new Error(`Failed to get stock data: ${response.error}`);
+        const result = response.data;
 
         return {
           content: [{ type: 'text', text: JSON.stringify(result) }],
         };
       }
-      case 'buffetcode_get_company_stocks_daily': {
+
+      case 'buffetcode_get_us_company_stocks_daily': {
         const args = CompanyStocksDailyRequestSchema.parse(
           request.params.arguments
         );
-
-        const response = await fetch(
-          `${BUFFETT_CODE_BASE_URL}/api/v4/us/companies/${COMPANY_ID}/stocks/${args.stock_id}/daily/${args.date}`,
+        const company_id = args.companyId;
+        const response = await buffetteCodeClient.GET(
+          '/api/v4/us/companies/{company_id}/stocks/{stock_id}/daily/{date}',
           {
-            headers: {
-              'x-api-key': BUFFETT_CODE_API_KEY,
+            params: {
+              path: {
+                company_id,
+                stock_id: args.stock_id,
+                date: args.date,
+              },
             },
           }
         );
 
-        if (!response.ok) {
-          throw new Error(
-            `Failed to get daily stock data: ${response.statusText}`
-          );
-        }
-
-        const result = await response.json();
+        if (response.error)
+          throw new Error(`Failed to get daily stock data: ${response.error}`);
+        const result = response.data;
 
         return {
           content: [{ type: 'text', text: JSON.stringify(result) }],
         };
       }
-      case 'buffetcode_get_company_stocks_quarterly': {
+
+      case 'buffetcode_get_us_company_stocks_quarterly': {
         const args = CompanyStocksQuarterlyRequestSchema.parse(
           request.params.arguments
         );
-
-        const response = await fetch(
-          `${BUFFETT_CODE_BASE_URL}/api/v4/us/companies/${COMPANY_ID}/stocks/${args.stock_id}/quarterly/${args.year_quarter}`,
+        const company_id = args.companyId;
+        const response = await buffetteCodeClient.GET(
+          '/api/v4/us/companies/{company_id}/stocks/{stock_id}/quarterly/{year_quarter}',
           {
-            headers: {
-              'x-api-key': BUFFETT_CODE_API_KEY,
+            params: {
+              path: {
+                company_id,
+                stock_id: args.stock_id,
+                year_quarter: args.year_quarter,
+              },
             },
           }
         );
 
-        if (!response.ok) {
+        if (response.error)
           throw new Error(
-            `Failed to get quarterly stock data: ${response.statusText}`
+            `Failed to get quarterly stock data: ${response.error}`
           );
-        }
-
-        const result = await response.json();
+        const result = response.data;
 
         return {
           content: [{ type: 'text', text: JSON.stringify(result) }],
         };
       }
+
       default:
         throw new Error(`Unknown tool: ${request.params.name}`);
     }
