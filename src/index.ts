@@ -8,12 +8,12 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import {
-  CompanyRequestSchema,
-  CompanyDailyRequestSchema,
-  CompanyQuarterlyRequestSchema,
-  CompanyStocksRequestSchema,
-  CompanyStocksDailyRequestSchema,
-  CompanyStocksQuarterlyRequestSchema,
+  USCompanyRequestSchema,
+  USCompanyDailyRequestSchema,
+  USCompanyQuarterlyRequestSchema,
+  USCompanyStocksRequestSchema,
+  USCompanyStocksDailyRequestSchema,
+  USCompanyStocksQuarterlyRequestSchema,
 } from './schemas.js';
 import dotenv from 'dotenv';
 import { createBuffetteCodeClient } from './client/index.js';
@@ -52,37 +52,37 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: 'buffetcode_get_us_company',
         description: 'Get company information from Buffett Code',
-        inputSchema: zodToJsonSchema(CompanyRequestSchema),
+        inputSchema: zodToJsonSchema(USCompanyRequestSchema),
       },
       {
         name: 'buffetcode_get_us_company_daily',
         description:
           'Get daily company information from Buffett Code for a specific date',
-        inputSchema: zodToJsonSchema(CompanyDailyRequestSchema),
+        inputSchema: zodToJsonSchema(USCompanyDailyRequestSchema),
       },
       {
         name: 'buffetcode_get_us_company_quarterly',
         description:
           'Get quarterly company information from Buffett Code for a specific year and quarter',
-        inputSchema: zodToJsonSchema(CompanyQuarterlyRequestSchema),
+        inputSchema: zodToJsonSchema(USCompanyQuarterlyRequestSchema),
       },
       {
         name: 'buffetcode_get_us_company_stocks',
         description:
           'Get company stock information from Buffett Code for a specific stock',
-        inputSchema: zodToJsonSchema(CompanyStocksRequestSchema),
+        inputSchema: zodToJsonSchema(USCompanyStocksRequestSchema),
       },
       {
         name: 'buffetcode_get_us_company_stocks_daily',
         description:
           'Get daily company stock information from Buffett Code for a specific stock and date',
-        inputSchema: zodToJsonSchema(CompanyStocksDailyRequestSchema),
+        inputSchema: zodToJsonSchema(USCompanyStocksDailyRequestSchema),
       },
       {
         name: 'buffetcode_get_us_company_stocks_quarterly',
         description:
           'Get quarterly company stock information from Buffett Code for a specific stock and year-quarter',
-        inputSchema: zodToJsonSchema(CompanyStocksQuarterlyRequestSchema),
+        inputSchema: zodToJsonSchema(USCompanyStocksQuarterlyRequestSchema),
       },
     ],
   };
@@ -96,7 +96,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
     switch (request.params.name) {
       case 'buffetcode_get_us_company': {
-        const args = CompanyRequestSchema.parse(request.params.arguments);
+        const args = USCompanyRequestSchema.parse(request.params.arguments);
         const company_id = args.companyId;
         const response = await buffetteCodeClient.GET(
           '/api/v4/us/companies/{company_id}',
@@ -121,7 +121,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'buffetcode_get_us_company_daily': {
-        const args = CompanyDailyRequestSchema.parse(request.params.arguments);
+        const args = USCompanyDailyRequestSchema.parse(
+          request.params.arguments
+        );
         const company_id = args.companyId;
         const response = await buffetteCodeClient.GET(
           '/api/v4/us/companies/{company_id}/daily/{date}',
@@ -138,7 +140,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'buffetcode_get_us_company_quarterly': {
-        const args = CompanyQuarterlyRequestSchema.parse(
+        const args = USCompanyQuarterlyRequestSchema.parse(
           request.params.arguments
         );
         const company_id = args.companyId;
@@ -161,7 +163,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'buffetcode_get_us_company_stocks': {
-        const args = CompanyStocksRequestSchema.parse(request.params.arguments);
+        const args = USCompanyStocksRequestSchema.parse(
+          request.params.arguments
+        );
         const company_id = args.companyId;
         const response = await buffetteCodeClient.GET(
           '/api/v4/us/companies/{company_id}/stocks/{stock_id}',
@@ -182,7 +186,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'buffetcode_get_us_company_stocks_daily': {
-        const args = CompanyStocksDailyRequestSchema.parse(
+        const args = USCompanyStocksDailyRequestSchema.parse(
           request.params.arguments
         );
         const company_id = args.companyId;
@@ -209,7 +213,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'buffetcode_get_us_company_stocks_quarterly': {
-        const args = CompanyStocksQuarterlyRequestSchema.parse(
+        const args = USCompanyStocksQuarterlyRequestSchema.parse(
           request.params.arguments
         );
         const company_id = args.companyId;
