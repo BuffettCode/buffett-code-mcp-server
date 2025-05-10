@@ -6,12 +6,12 @@ A [MCP(Model Context Protocol)](https://www.anthropic.com/news/model-context-pro
 
 Available tools:
 
-- `buffett_code_get_company` - Get company information from Buffett Code
-- `buffett_code_get_company_daily` - Get daily company information from Buffett Code for a specific date
-- `buffett_code_get_company_quarterly` - Get quarterly company information from Buffett Code for a specific year and quarter
-- `buffett_code_get_company_stocks` - Get company stock information from Buffett Code for a specific stock
-- `buffett_code_get_company_stocks_daily` Get daily company stock information from Buffett Code for a specific stock and date
-- `buffett_code_get_company_stocks_quarterly` - Get quarterly company stock information from Buffett Code for a specific stock and year-quarter
+- `buffett_code_get_us_company` - Get company information from Buffett Code
+- `buffett_code_get_us_company_daily` - Get daily company information from Buffett Code for a specific date
+- `buffett_code_get_us_company_quarterly` - Get quarterly company information from Buffett Code for a specific year and quarter
+- `buffett_code_get_us_company_stocks` - Get company stock information from Buffett Code for a specific stock
+- `buffett_code_get_us_company_stocks_daily` Get daily company stock information from Buffett Code for a specific stock and date
+- `buffett_code_get_us_company_stocks_quarterly` - Get quarterly company stock information from Buffett Code for a specific stock and year-quarter
 
 ## Quick Start
 
