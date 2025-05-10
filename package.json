@@ -21,7 +21,8 @@
     "lint:prettier": "prettier --check \"src/**/*.ts\"",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint \"src/**/*.ts\" --fix",
-    "fix:prettier": "prettier --write \"src/**/*.ts\""
+    "fix:prettier": "prettier --write \"src/**/*.ts\"",
+    "examples": "node --import ./ts-node-loader.js examples/get_us_company.ts"
   },
   "repository": {
     "type": "git",
