@@ -29,7 +29,7 @@ async function main() {
   // Initialize MCP client
   const client = new Client(
     {
-      name: 'buffetcode-mcp-example-client',
+      name: 'buffett-code-mcp-example-client',
       version: '1.0.0',
     },
     {
@@ -61,7 +61,7 @@ async function main() {
     
     const response = (await client.callTool(
       {
-        name: 'buffetcode_get_us_company',
+        name: 'buffett_code_get_us_company',
         arguments: {
           companyId: '0001652044', // Google (Alphabet) EDINET code
         },

@@ -36,7 +36,7 @@ const buffetteCodeClient = createBuffetteCodeClient(
 
 const server = new Server(
   {
-    name: 'buffetcode-mcp-server',
+    name: 'buffett-code-mcp-server',
     version: '0.0.1',
   },
   {
@@ -50,36 +50,36 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: 'buffetcode_get_us_company',
+        name: 'buffett_code_get_us_company',
         description: 'Get company information from Buffett Code',
         inputSchema: zodToJsonSchema(USCompanyRequestSchema),
       },
       {
-        name: 'buffetcode_get_us_company_daily',
+        name: 'buffett_code_get_us_company_daily',
         description:
           'Get daily company information from Buffett Code for a specific date',
         inputSchema: zodToJsonSchema(USCompanyDailyRequestSchema),
       },
       {
-        name: 'buffetcode_get_us_company_quarterly',
+        name: 'buffett_code_get_us_company_quarterly',
         description:
           'Get quarterly company information from Buffett Code for a specific year and quarter',
         inputSchema: zodToJsonSchema(USCompanyQuarterlyRequestSchema),
       },
       {
-        name: 'buffetcode_get_us_company_stocks',
+        name: 'buffett_code_get_us_company_stocks',
         description:
           'Get company stock information from Buffett Code for a specific stock',
         inputSchema: zodToJsonSchema(USCompanyStocksRequestSchema),
       },
       {
-        name: 'buffetcode_get_us_company_stocks_daily',
+        name: 'buffett_code_get_us_company_stocks_daily',
         description:
           'Get daily company stock information from Buffett Code for a specific stock and date',
         inputSchema: zodToJsonSchema(USCompanyStocksDailyRequestSchema),
       },
       {
-        name: 'buffetcode_get_us_company_stocks_quarterly',
+        name: 'buffett_code_get_us_company_stocks_quarterly',
         description:
           'Get quarterly company stock information from Buffett Code for a specific stock and year-quarter',
         inputSchema: zodToJsonSchema(USCompanyStocksQuarterlyRequestSchema),
@@ -95,7 +95,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     switch (request.params.name) {
-      case 'buffetcode_get_us_company': {
+      case 'buffett_code_get_us_company': {
         const args = USCompanyRequestSchema.parse(request.params.arguments);
         const company_id = args.companyId;
         const response = await buffetteCodeClient.GET(
@@ -120,7 +120,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'buffetcode_get_us_company_daily': {
+      case 'buffett_code_get_us_company_daily': {
         const args = USCompanyDailyRequestSchema.parse(
           request.params.arguments
         );
@@ -139,7 +139,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'buffetcode_get_us_company_quarterly': {
+      case 'buffett_code_get_us_company_quarterly': {
         const args = USCompanyQuarterlyRequestSchema.parse(
           request.params.arguments
         );
@@ -162,7 +162,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'buffetcode_get_us_company_stocks': {
+      case 'buffett_code_get_us_company_stocks': {
         const args = USCompanyStocksRequestSchema.parse(
           request.params.arguments
         );
@@ -185,7 +185,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'buffetcode_get_us_company_stocks_daily': {
+      case 'buffett_code_get_us_company_stocks_daily': {
         const args = USCompanyStocksDailyRequestSchema.parse(
           request.params.arguments
         );
@@ -212,7 +212,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'buffetcode_get_us_company_stocks_quarterly': {
+      case 'buffett_code_get_us_company_stocks_quarterly': {
         const args = USCompanyStocksQuarterlyRequestSchema.parse(
           request.params.arguments
         );
@@ -255,7 +255,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('Buffette Code MCP Server running on stdio');
+  console.error('Buffett Code MCP Server running on stdio');
 }
 
 runServer().catch((error) => {
