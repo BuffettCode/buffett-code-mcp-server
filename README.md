@@ -1,17 +1,17 @@
-# buffette-code-mcp-server
+# buffett-code-mcp-server
 
-A [MCP(Model Context Protocol)](https://www.anthropic.com/news/model-context-protocol) server that accesses to [buffet code API](https://docs.buffett-code.com/api/).
+A [MCP(Model Context Protocol)](https://www.anthropic.com/news/model-context-protocol) server that accesses to [buffett-code API](https://docs.buffett-code.com/api/).
 
 ## Features
 
 Available tools:
 
-- `buffetcode_get_company` - Get company information from Buffett Code
-- `buffetcode_get_company_daily` - Get daily company information from Buffett Code for a specific date
-- `buffetcode_get_company_quarterly` - Get quarterly company information from Buffett Code for a specific year and quarter
-- `buffetcode_get_company_stocks` - Get company stock information from Buffett Code for a specific stock
-- `buffetcode_get_company_stocks_daily` Get daily company stock information from Buffett Code for a specific stock and date
-- `buffetcode_get_company_stocks_quarterly` - Get quarterly company stock information from Buffett Code for a specific stock and year-quarter
+- `buffett_code_get_us_company` - Get company information from Buffett Code
+- `buffett_code_get_us_company_daily` - Get daily company information from Buffett Code for a specific date
+- `buffett_code_get_us_company_quarterly` - Get quarterly company information from Buffett Code for a specific year and quarter
+- `buffett_code_get_us_company_stocks` - Get company stock information from Buffett Code for a specific stock
+- `buffett_code_get_us_company_stocks_daily` Get daily company stock information from Buffett Code for a specific stock and date
+- `buffett_code_get_us_company_stocks_quarterly` - Get quarterly company stock information from Buffett Code for a specific stock and year-quarter
 
 ## Quick Start
 
@@ -29,10 +29,10 @@ TBD
 
 ```json
 ...
-    "buffet-code": {
+    "buffett-code": {
       "command": "node",
       "args": [
-        "/path/to/buffet-code-mcp-server/dist/index.js"
+        "/path/to/buffett-code-mcp-server/dist/index.js"
       ],
       "env": {
       }
@@ -52,7 +52,7 @@ npm install -D tsx
 ```json
 {
   "mcpServers": {
-      "buffet-code": {
+      "buffett-code": {
         "command": "npx",
         "args": [
           "tsx",
