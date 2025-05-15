@@ -3,7 +3,6 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { config } from 'dotenv';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { CallToolResult, CallToolResultSchema } from '@modelcontextprotocol/sdk/types.js';
 
 // Get the current file's directory
 const __filename = fileURLToPath(import.meta.url);
@@ -51,25 +50,13 @@ async function main() {
     await client.connect(transport);
     console.log('Connected to BuffetCode MCP server');
 
-    const response = (await client.callTool(
-      {
-        name: 'buffett_code_get_us_company',
-        arguments: {
-          companyId: '0001652044', // Google (Alphabet) EDINET code
-        },
-      },
-      CallToolResultSchema
-    )) as CallToolResult;
-
-    if (
-      Array.isArray(response.content) &&
-      response.content[0]?.type === 'text'
-    ) {
-      const data = JSON.parse(response.content[0].text);
-      console.log('Company data (example):', data);
-    } else {
-      console.error('Unexpected response format for example call');
-    }
+    // List available tools
+    const toolsResponse = await client.listTools();
+    
+    console.log('Available tools:');
+    toolsResponse.tools.forEach(tool => {
+      console.log(`- ${tool.name}: ${tool.description}`);
+    });
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);

@@ -53,9 +53,9 @@ async function main() {
 
     const response = (await client.callTool(
       {
-        name: 'buffett_code_get_us_company',
+        name: 'buffett_code_get_jp_company',
         arguments: {
-          companyId: '0001652044', // Google (Alphabet) EDINET code
+          companyId: '9101', // 日本郵船
         },
       },
       CallToolResultSchema

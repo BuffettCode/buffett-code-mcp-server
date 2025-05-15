@@ -6,11 +6,28 @@ A [MCP(Model Context Protocol)](https://www.anthropic.com/news/model-context-pro
 
 Available tools:
 
+### Japan Market
+
+- `buffett_code_get_jp_company` - Get Japanese company information from Buffett Code
+- `buffett_code_get_jp_company_daily` - Get daily Japanese company information from Buffett Code for a specific date
+- `buffett_code_get_jp_company_quarterly` - Get quarterly Japanese company information from Buffett Code for a specific year and quarter
+- `buffett_code_get_jp_company_daily_market_reaction` - Get the daily market reaction for a JP company as both text and stock price change rate. Currently available only for stocks with sufficient data, on or near quarterly or annual earnings announcement dates.
+- `buffett_code_get_jp_company_weekly_stats` - Get weekly statistics calculated for the company or stock, mainly including stock price related statistics.
+- `buffett_code_get_jp_company_monthly_stats` - Get monthly statistics calculated for the company or stock, mainly including stock price related statistics.
+- `buffett_code_get_jp_company_monthly_kpis` - Get monthly KPIs for a JP company.
+- `buffett_code_get_jp_company_quarterly_long_text_content` - Get processed long-form text content from Buffett Code, based on HTML text found in securities reports or quarterly reports.
+- `buffett_code_get_jp_company_quarterly_major_shareholders` - Get major shareholders information for a company or stock as listed in its securities report or quarterly report.
+- `buffett_code_get_jp_company_quarterly_segments` - Get segment information as disclosed in a company or stock’s securities report or quarterly report.
+- `buffett_code_get_jp_company_annually_guidance_revisions` - Get a list of earnings guidance revisions by fiscal year for the company or stock.
+- `buffett_code_get_jp_company_similarities` - Get a list of companies similar to the specified company.
+
+### US Market
+
 - `buffett_code_get_us_company` - Get company information from Buffett Code
 - `buffett_code_get_us_company_daily` - Get daily company information from Buffett Code for a specific date
 - `buffett_code_get_us_company_quarterly` - Get quarterly company information from Buffett Code for a specific year and quarter
 - `buffett_code_get_us_company_stocks` - Get company stock information from Buffett Code for a specific stock
-- `buffett_code_get_us_company_stocks_daily` Get daily company stock information from Buffett Code for a specific stock and date
+- `buffett_code_get_us_company_stocks_daily` - Get daily company stock information from Buffett Code for a specific stock and date
 - `buffett_code_get_us_company_stocks_quarterly` - Get quarterly company stock information from Buffett Code for a specific stock and year-quarter
 
 ## Quick Start

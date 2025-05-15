@@ -22,7 +22,10 @@
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint \"src/**/*.ts\" --fix",
     "fix:prettier": "prettier --write \"src/**/*.ts\"",
-    "examples": "npm run build && node --import ./ts-node-loader.js examples/get_us_company.ts"
+    "examples": "run-s examples:*",
+    "examples:list_tools": "npm run build && node --import ./ts-node-loader.js examples/list_tools.ts",
+    "examples:get_jp_company": "npm run build && node --import ./ts-node-loader.js examples/get_jp_company.ts",
+    "examples:get_us_company": "npm run build && node --import ./ts-node-loader.js examples/get_us_company.ts"
   },
   "repository": {
     "type": "git",
@@ -53,6 +56,7 @@
     "@typescript-eslint/parser": "^6.19.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^9.1.0",
+    "npm-run-all2": "^8.0.1",
     "openapi-typescript": "^7.7.1",
     "prettier": "^3.2.2",
     "shx": "^0.3.4",
