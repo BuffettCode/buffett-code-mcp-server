@@ -42,7 +42,7 @@
   },
   "homepage": "https://github.com/syucream/buffett-code-mcp-server#readme",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@modelcontextprotocol/sdk": "^1.25.2",
     "@types/node": "^20.10.3",
     "dotenv": "^16.4.7",
     "openapi-fetch": "^0.13.7",
